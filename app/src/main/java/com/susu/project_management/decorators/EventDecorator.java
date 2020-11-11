@@ -1,4 +1,4 @@
-package com.susu.project_management.decorator;
+package com.susu.project_management.decorators;
 
 import android.app.Activity;
 import android.graphics.drawable.Drawable;

@@ -1,23 +1,31 @@
 package com.susu.project_management;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
+import android.app.Activity;
+import android.app.Dialog;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.EditText;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.datepicker.MaterialCalendar;
+import com.susu.project_management.decorators.EventDecorator;
+import com.susu.project_management.decorators.OneDayDecorator;
+import com.susu.project_management.decorators.SaturdayDecorator;
+import com.susu.project_management.decorators.SundayDecorator;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.CalendarMode;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
-import com.susu.project_management.decorator.*;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -70,39 +78,9 @@ public class Calendar_MainActivity extends AppCompatActivity {
                 Log.i("shot_Day test", shot_Day + "");
                 materialCalendarView.clearSelection();
 
-                show();
+                Toast.makeText(getApplicationContext(), shot_Day , Toast.LENGTH_SHORT).show();
             }
         });
-    }
-
-    void show() {
-        final List<String> ListItems = new ArrayList<>();
-        final CharSequence[] items = ListItems.toArray(new String[ListItems.size()]);
-        final EditText editText = new EditText(this);
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("일정 추가하기");
-        builder.setMessage("추가 할 일정을 적어주세요.");
-        builder.setView(editText);
-        builder.setPositiveButton("입력",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(getApplicationContext(),editText.getText().toString() ,Toast.LENGTH_LONG).show();
-                    }
-                });
-        builder.setNegativeButton("취소",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-
-                    }
-                });
-        builder.setItems(items, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int pos) {
-                String selectedText = items[pos].toString();
-                Toast.makeText(Calendar_MainActivity.this, selectedText, Toast.LENGTH_SHORT).show();
-            }
-        });
-        builder.show();
     }
 
     private class ApiSimulator extends AsyncTask<Void, Void, List<CalendarDay>> {
@@ -153,6 +131,5 @@ public class Calendar_MainActivity extends AppCompatActivity {
 
             materialCalendarView.addDecorator(new EventDecorator(Color.GREEN, calendarDays,Calendar_MainActivity.this));
         }
-
     }
 }

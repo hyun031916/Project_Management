@@ -131,17 +131,5 @@ public class MainActivity extends AppCompatActivity {
                         });
             }
         });
-
-
-
-        // 캘린더를 보기 위한 버튼
-        Button imageButton = (Button) findViewById(R.id.button);
-        imageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), Calendar_MainActivity.class);
-                startActivity(intent);
-            }
-        });
     }
 }

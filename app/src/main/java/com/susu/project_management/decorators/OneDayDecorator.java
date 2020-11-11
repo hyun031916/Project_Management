@@ -1,4 +1,4 @@
-package com.susu.project_management.decorator;
+package com.susu.project_management.decorators;
 
 import android.graphics.Color;
 import android.graphics.Typeface;

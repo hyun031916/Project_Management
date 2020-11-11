@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "904883117774",
+    "firebase_url": "https://projectmanagement-202e1.firebaseio.com",
+    "project_id": "projectmanagement-202e1",
+    "storage_bucket": "projectmanagement-202e1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:904883117774:android:7c8aa6184ec46398a87a9f",
+        "android_client_info": {
+          "package_name": "com.susu.project_management"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "904883117774-f28fh9h31m88i96s42b0vfojaq202k8f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAiQDR5z9tzuLq1svjA-VUTIKoM7dF162Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "904883117774-f28fh9h31m88i96s42b0vfojaq202k8f.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

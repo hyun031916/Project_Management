@@ -9,7 +9,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
+        android:text="Team Project!"
         android:textSize="30sp"
         android:layout_marginTop="200dp"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -17,7 +17,7 @@
         app:layout_constraintTop_toTopOf="parent"
         android:id="@+id/tvTitleView"/>
     <EditText
-        android:layout_width="200dp"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/tvTitleView"
         android:layout_marginTop="10dp"
@@ -28,7 +28,7 @@
         android:inputType="textEmailAddress"
         />
     <EditText
-        android:layout_width="200dp"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/etId"
         android:layout_marginTop="10dp"
@@ -39,7 +39,7 @@
         android:inputType="textPassword"
         />
     <EditText
-        android:layout_width="200dp"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/etPwd"
         android:layout_marginTop="10dp"

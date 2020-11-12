@@ -125,8 +125,8 @@ public class ChatActivity extends AppCompatActivity {
                         Toast.LENGTH_SHORT).show();
             }
         };
-        DatabaseReference myRef = database.getReference("message");
-        myRef.addChildEventListener(childEventListener);
+        DatabaseReference ref = database.getReference("message");
+        ref.addChildEventListener(childEventListener);
 
         btnSend.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -3,7 +3,9 @@ package com.susu.project_management;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -17,8 +19,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.time.ZoneId;
+import java.util.Hashtable;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
@@ -26,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
     EditText etId, etPwd, etCheckPwd;
     private FirebaseAuth mAuth;
     ProgressBar progressBar;
+    FirebaseDatabase database;
 
     @Override
     protected void onStart() {
@@ -37,6 +43,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mAuth = FirebaseAuth.getInstance();
+        database = FirebaseDatabase.getInstance();
 
         etId = (EditText)findViewById(R.id.etId);
         etPwd = (EditText)findViewById(R.id.etPwd);
@@ -48,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String stEmail = etId.getText().toString();
+                final String stEmail = etId.getText().toString();
                 String stPwd = etPwd.getText().toString();
                 if(stEmail.isEmpty()){
                     Toast.makeText(MainActivity.this, "이메일을 입력하세요.", Toast.LENGTH_SHORT).show();
@@ -61,8 +69,10 @@ public class MainActivity extends AppCompatActivity {
                 progressBar.setVisibility(View.VISIBLE);
                 mAuth.signInWithEmailAndPassword(stEmail, stPwd)
                         .addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
+
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
+                                progressBar.setVisibility(View.GONE);
                                 if (task.isSuccessful()) {
                                     // Sign in success, update UI with the signed-in user's information
                                     Log.d(TAG, "signInWithEmail:success");
@@ -70,7 +80,13 @@ public class MainActivity extends AppCompatActivity {
                                     String stUserEmail = user.getEmail();
                                     String stUserName = user.getDisplayName();
                                     Log.d(TAG, "stUserEmail : "+stUserEmail+", stUserName"+stUserName);
-                                    Intent i = new Intent(MainActivity.this, ChatActivity.class);
+
+                                    SharedPreferences sharedPref = getSharedPreferences("shared", Context.MODE_PRIVATE);
+                                    SharedPreferences.Editor editor = sharedPref.edit();
+                                    editor.putString("email", stUserEmail);
+                                    editor.commit();
+
+                                    Intent i = new Intent(MainActivity.this, TabActivity.class);
                                     i.putExtra("email", stEmail);
                                     startActivity(i);
 //                                    updateUI(user);
@@ -118,6 +134,15 @@ public class MainActivity extends AppCompatActivity {
                                     // Sign in success, update UI with the signed-in user's information
                                     Log.d(TAG, "createUserWithEmail:success");
                                     FirebaseUser user = mAuth.getCurrentUser();
+
+                                    DatabaseReference myRef = database.getReference("users").child(user.getUid());
+
+                                    Hashtable<String, String> numbers
+                                            = new Hashtable<String, String>();
+                                    numbers.put("email", user.getEmail());
+                                    myRef.setValue(numbers);
+                                    Toast.makeText(MainActivity.this, "Register Success", Toast.LENGTH_LONG).cancel();
+
 //                                    updateUI(user);
                                 } else {
                                     // If sign in fails, display a message to the user.

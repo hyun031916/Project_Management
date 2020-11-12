@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Project_Management</string>
-</resources>
+    <string name="title_activity_tap">TapActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_friend">Users</string>
+    <string name="title_profile">Profile</string>
+</resources><!--    https://www.youtube.com/watch?v=xunhPN66y8I&list=PLY0IkcTk5XcYyS8SwJQ8-KoXduyk1xTzE&index=14   5:49-->

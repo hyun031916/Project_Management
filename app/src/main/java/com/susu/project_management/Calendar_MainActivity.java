@@ -110,10 +110,10 @@ public class Calendar_MainActivity extends AppCompatActivity {
                 String[] time = Time_Result[i].split(",");
                 int year = Integer.parseInt(time[0]);
                 int month = Integer.parseInt(time[1]);
-                int dayy = Integer.parseInt(time[2]);
+                int day2 = Integer.parseInt(time[2]);
 
                 dates.add(day);
-                calendar.set(year,month-1,dayy);
+                calendar.set(year,month-1,day2);
             }
 
 

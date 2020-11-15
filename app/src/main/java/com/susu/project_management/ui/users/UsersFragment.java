@@ -33,20 +33,22 @@ import com.susu.project_management.UserAdapter;
 import java.util.ArrayList;
 
 public class UsersFragment extends Fragment {
-    private static final String TAG = "UsersFragment";
-    private DashboardViewModel dashboardViewModel;
-    FirebaseDatabase database;
-    private FirebaseAuth mAuth;
 
+    private DashboardViewModel dashboardViewModel;
+    private static final String TAG = "UsersFragment";
+    private ArrayList<User> userArrayList;
+    private FirebaseDatabase database;
+    private FirebaseAuth mAuth;
+    private DatabaseReference mRef;
     private RecyclerView recyclerView;
-    UserAdapter mAdapter;
+    private UserAdapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
 
-    ArrayList<User> userArrayList;
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        database = FirebaseDatabase.getInstance();
+        database = FirebaseDatabase.getInstance();  //파이어베이스 데이터베이스 연동
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();
 
@@ -64,8 +66,8 @@ public class UsersFragment extends Fragment {
 
         SharedPreferences sharedPref = getActivity().getSharedPreferences("shared", Context.MODE_PRIVATE);
         String stEmail = sharedPref.getString("email", "");
-
-        userArrayList = new ArrayList<>();
+        Context context = null;
+        userArrayList = new ArrayList<>();  //User 객체를 담을 리스트
 
         recyclerView = (RecyclerView) root.findViewById(R.id.my_recycler_view);
 
@@ -79,22 +81,23 @@ public class UsersFragment extends Fragment {
 
         // specify an adapter (see also next example)
         String[] myDataset = {"test1", "test2", "test3"};
-        mAdapter = new UserAdapter(userArrayList, stEmail);
+        mAdapter = new UserAdapter(userArrayList, stEmail, this);
         recyclerView.setAdapter(mAdapter);
 
         String stUid = user.getEmail();
-        DatabaseReference ref = database.getReference("users");
-        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+        mRef = database.getReference("users");  //DB 테이블 연결결
+        mRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                //파이어베이스 데이터베이스의 데이터 받아오는 곳.
                 Log.d(TAG, "onDataChange: " + snapshot.getValue().toString());
                 for(DataSnapshot dataSnapshot1 : snapshot.getChildren()){
-
+                    //반복문으로 데이터 List 추출
                     User user = dataSnapshot1.getValue(User.class);
                     Log.d(TAG, "user: "+ user.getEmail());
-                    userArrayList.add(user);
+                    userArrayList.add(user);    //담은 데이터들 배열리스트에 넣고 리사이클러뷰로 보낼 준비
                 }
-                mAdapter.notifyDataSetChanged();
+                mAdapter.notifyDataSetChanged();    //리스트 저장 및 새로고침
             }
 
             @Override

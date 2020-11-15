@@ -1,5 +1,7 @@
 package com.susu.project_management;
 
+import android.content.Context;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,11 +10,16 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.squareup.picasso.Picasso;
+import com.susu.project_management.ui.users.UsersFragment;
+
 import java.util.ArrayList;
 
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MyViewHolder> {
     private ArrayList<User> mDataset;
     String stMyEmail = "";
+    UsersFragment context;
+
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -23,8 +30,8 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MyViewHolder> 
         public ImageView ivUser;
         public MyViewHolder(View v) {
             super(v);
-            tvUser = v.findViewById(R.id.tvUser);
-            ivUser = v.findViewById(R.id.ivUser);
+            tvUser = (TextView)v.findViewById(R.id.tvUser);
+            ivUser = (ImageView)v.findViewById(R.id.ivUser);
         }
     }
 
@@ -34,9 +41,10 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MyViewHolder> 
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public UserAdapter(ArrayList<User> myDataset, String stEmail) {
-        mDataset = myDataset;
+    public UserAdapter(ArrayList<User> mDataset, String stEmail, UsersFragment context) {
+        this.mDataset = mDataset;
         this.stMyEmail = stEmail;
+        this.context = context;
     }
 
     // Create new views (invoked by the layout manager)
@@ -57,7 +65,11 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MyViewHolder> 
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
         holder.tvUser.setText(mDataset.get(position).getEmail());
-
+        Picasso.get()
+                .load(mDataset.get(position).getPhoto())
+                .fit()
+                .centerInside()
+                .into(holder.ivUser);
     }
 
     // Return the size of your dataset (invoked by the layout manager)

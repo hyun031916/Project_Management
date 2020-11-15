@@ -4,7 +4,14 @@ import java.text.DateFormat;
 
 public class Project {
     String title;
-    DateFormat date;
+    String date;
+    String description;
+
+    public Project(String title, String date, String description) {
+        this.title = title;
+        this.date = date;
+        this.description = description;
+    }
 
     public String getTitle() {
         return title;
@@ -14,11 +21,19 @@ public class Project {
         this.title = title;
     }
 
-    public DateFormat getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(DateFormat date) {
+    public void setDate(String date) {
         this.date = date;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

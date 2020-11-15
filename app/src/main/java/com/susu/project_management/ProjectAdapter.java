@@ -1,5 +1,6 @@
 package com.susu.project_management;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,11 +9,21 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.storage.FirebaseStorage;
+import com.susu.project_management.ui.home.HomeFragment;
+
 import java.text.DateFormat;
 import java.util.ArrayList;
 
-public class ProjectAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
-    private ArrayList<Project> mDataset;
+public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.MyViewHolder> {
+    private ArrayList<Project> mDataset;    //데이터 보관
+    Context context;
+    FirebaseStorage storage = FirebaseStorage.getInstance();
+
+    public ProjectAdapter(ArrayList<Project> mDataset) {
+        this.mDataset = mDataset;
+    }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
@@ -27,25 +38,30 @@ public class ProjectAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>
         }
     }
 
-    @NonNull
+
     @Override
-    public MyAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ProjectAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
-        TextView v = (TextView) LayoutInflater.from(parent.getContext())
+        View v = (View) LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.project_item_view, parent, false);
         MyViewHolder vh = new MyViewHolder(v);
         return vh;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyAdapter.MyViewHolder holder, int position) {
-        // - get element from your dataset at this position
-        // - replace the contents of the view with that element
-        holder.textView.setText(mDataset[position]);
+    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+        holder.tvTitle.setText(mDataset.get(position).getTitle());
+        holder.tvDate.setText(mDataset.get(position).getDate());
+        holder.tvDescription.setText(mDataset.get(position).getDescription());
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return (null!= mDataset ? mDataset.size():0);
     }
+
+//    @Override
+//    public int getItemCount() {
+//        return itmes.size();
+//    }
 }

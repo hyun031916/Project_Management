@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -43,6 +44,9 @@ public class ProjectActivity extends AppCompatActivity {
                 Project data = new Project(count+"", "날짜 : ", "설명 : ");
                 projectArrayList.add(data);
                 mAdapter.notifyDataSetChanged();
+
+                Intent i = new Intent(ProjectActivity.this, CreateProjectActivity.class);
+                startActivity(i);
             }
         });
     }

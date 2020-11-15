@@ -4,4 +4,6 @@
     <string name="title_home">Home</string>
     <string name="title_friend">Users</string>
     <string name="title_profile">Profile</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources><!--    https://www.youtube.com/watch?v=xunhPN66y8I&list=PLY0IkcTk5XcYyS8SwJQ8-KoXduyk1xTzE&index=14   5:49-->

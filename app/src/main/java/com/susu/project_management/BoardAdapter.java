@@ -30,20 +30,10 @@ import java.util.List;
 
 public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.ItemViewHolder> {
     Context context;
-    List<Board> data = new ArrayList<Board>();
+    List<Board> data = new ArrayList<>();
 
     public BoardAdapter(Context context) {
         this.context = context;
-    }
-
-    @Override
-    public int getCount() {
-        return data.size();
-    }
-
-    @Override
-    public Object getItem(int position) {
-        return null;
     }
     @Override
     public long getItemId(int position) {
@@ -55,31 +45,45 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.ItemViewHold
         return 0;
     }
 
+    @NonNull
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        int viewType = getItemViewType(position);
+    public BoardAdapter.ItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        //LayoutInflater를 이용하여 전 단계에서 만들었던
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.create_item_view, parent, false);
+        return new ItemViewHolder(view);
+    }
 
-        //레이아웃 형성
-        if(convertView == null){
-            if(viewType == 0){
-                convertView = LayoutInflater.from(context).inflate(R.layout.create_project_activity, parent, false);
+    @Override
+    public void onBindViewHolder(@NonNull BoardAdapter.ItemViewHolder holder, int position) {
 
-            }else if(viewType == 1){
-                convertView = LayoutInflater.from(context).inflate(R.layout.activity_project, parent, false);
-            }
-        }
+    }
 
-        if(viewType == 0){
-            Button btn_save = (Button)convertView.findViewById(R.id.btn_save);
-            EditText etTitle = (EditText)convertView.findViewById(R.id.etTitle);
-            EditText edit_title = (EditText) convertView.findViewById(R.id.etTitle);
-            ImageButton calendar = (ImageButton)convertView.findViewById(R.id.calendar);
-            TextView tvDeadline = (TextView) convertView.findViewById(R.id.deadline);
-            EditText etDescription = (EditText) convertView.findViewById(R.id.etDescription);
-            EditText etUser = (EditText) convertView.findViewById(R.id.add_friend);
+    @Override
+    public int getItemViewType(int position) {
+        return data.get(position).getType();
+    }
+
+    public class ItemViewHolder extends RecyclerView.ViewHolder{
+        Button btn_save;
+        EditText etTitle;
+        ImageButton calendar;
+        TextView tvDeadline;
+        EditText etDescription;
+        EditText etUser;
+
+
+        public ItemViewHolder(@NonNull View itemView) {
+            super(itemView);
+            //https://dev-imaec.tistory.com/27
+            btn_save = (Button)itemView.findViewById(R.id.btn_save);
+            etTitle = (EditText)itemView.findViewById(R.id.etTitle);
+            calendar = (ImageButton)itemView.findViewById(R.id.calendar);
+            tvDeadline = (TextView) itemView.findViewById(R.id.deadline);
+            etDescription = (EditText) itemView.findViewById(R.id.etDescription);
+            etUser = (EditText) itemView.findViewById(R.id.add_friend);
 
             //날짜 출력 텍스트 뷰에 오늘 날짜 설정.
-            TextView tvDate = (TextView)convertView.findViewById(R.id.tvDate);
+            TextView tvDate = (TextView)itemView.findViewById(R.id.tvDate);
             Calendar cal = Calendar.getInstance();
             tvDate.setText(Calendar.YEAR+"/"+(cal.get(Calendar.MONTH)+1)+"/"+cal.get(Calendar.DATE));
 
@@ -109,7 +113,7 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.ItemViewHold
                 public void onClick(View v) {
                     DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
                     Board board = new Board(etTitle.getText().toString(),
-                            tvDeadline.toString(), etDescription.toString(), etUser.toString(), viewType);
+                            tvDeadline.toString(), etDescription.toString(), etUser.toString(), 1);
                     databaseReference.child("project").push().setValue(board);
                     etTitle.setText("");
                     etDescription.setText("");
@@ -120,35 +124,12 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.ItemViewHold
             });
 
         }
-        return convertView;
-    }
 
-
-    @NonNull
-    @Override
-    public BoardAdapter.ItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return null;
-    }
-
-    @Override
-    public void onBindViewHolder(@NonNull BoardAdapter.ItemViewHolder holder, int position) {
-
-    }
-
-    @Override
-    public int getItemViewType(int position) {
-        return data.get(position).getType();
-    }
-
-    @Override
-    public int getViewTypeCount() {
-        return 2;
-    }
-
-    public class ItemViewHolder extends RecyclerView.ViewHolder{
-        public ItemViewHolder(@NonNull View itemView) {
-            super(itemView);
-            //https://dev-imaec.tistory.com/27
+        public void onBind(Board board){
+            etTitle.setText(board.getTitle());
+            tvDeadline.setText(board.getDate());
+            etDescription.setText(board.getDescription());
+            etUser.setText(board.getUser());
         }
     }
 }

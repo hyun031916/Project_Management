@@ -65,6 +65,7 @@ public class ProfileFragment extends Fragment {
         Log.d(TAG, "stEmail: "+stEmail);
         mStorageRef = FirebaseStorage.getInstance().getReference();
 
+        //사진 권한 요청하기
         if (ContextCompat.checkSelfPermission(
                 getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) !=
                 PackageManager.PERMISSION_GRANTED) {
@@ -80,6 +81,7 @@ public class ProfileFragment extends Fragment {
         }else {
 
         }
+        //프로필 클릭하여 이미지 선택하기
         ivUser = root.findViewById(R.id.ivUser);
         ivUser.setOnClickListener(new View.OnClickListener() {
             @Override

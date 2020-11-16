@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -18,6 +19,7 @@ public class ProjectActivity extends AppCompatActivity {
     private ArrayList<Project> projectArrayList;
     private int count = -1;
     private ProjectAdapter mAdapter;
+    TextView project_page;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,8 +29,13 @@ public class ProjectActivity extends AppCompatActivity {
         RecyclerView mRecylerView = (RecyclerView) findViewById(R.id.project_recycler_view);
         LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(this);
         mRecylerView.setLayoutManager(mLinearLayoutManager);
+        project_page = (TextView)findViewById(R.id.project_page);
 
-        projectArrayList = new ArrayList<>();
+//        //유저 이메일 받아오기
+//        Intent intent = getIntent();
+//        String name = intent.getStringExtra("userId");
+//        project_page.setText(name+"님의 프로젝트 생성 페이지");
+//        projectArrayList = new ArrayList<>();
 
         mAdapter = new ProjectAdapter(projectArrayList);
         mRecylerView.setAdapter(mAdapter);
@@ -40,10 +47,10 @@ public class ProjectActivity extends AppCompatActivity {
         btnInsert.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                count++;
-                Project data = new Project(count+"", "날짜 : ", "설명 : ");
-                projectArrayList.add(data);
-                mAdapter.notifyDataSetChanged();
+//                count++;
+//                Project data = new Project(count+"", "날짜 : ", "설명 : ");
+//                projectArrayList.add(data);
+//                mAdapter.notifyDataSetChanged();
 
                 Intent i = new Intent(ProjectActivity.this, CreateProjectActivity.class);
                 startActivity(i);

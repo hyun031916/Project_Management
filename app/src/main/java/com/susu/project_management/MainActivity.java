@@ -50,7 +50,6 @@ public class MainActivity extends AppCompatActivity {
         etPwd = (EditText)findViewById(R.id.etPwd);
         etCheckPwd = (EditText)findViewById(R.id.etCheckPwd);
         progressBar = (ProgressBar)findViewById(R.id.progressBar);
-        mAuth = FirebaseAuth.getInstance();
 
         btnLogin = (Button)findViewById(R.id.btnLogin);
         btnLogin.setOnClickListener(new View.OnClickListener() {

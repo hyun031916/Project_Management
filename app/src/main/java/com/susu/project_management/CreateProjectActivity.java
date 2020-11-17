@@ -18,6 +18,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
@@ -78,14 +79,8 @@ public class CreateProjectActivity extends AppCompatActivity {
         calendar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DatePickerDialog.OnDateSetListener mDateSetListener =
-                        new DatePickerDialog.OnDateSetListener() {
-                            @Override
-                            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                                //Date Picker에서 선택한 날짜 Textview에 설정
-                                tvDeadline.setText(String.format("%d/%d/%d", year, month+1, dayOfMonth));
-                            }
-                };
+                DialogFragment newFragment = new DatePickerFragment();
+                newFragment.show(getSupportFragmentManager(), "datePicker");
             }
         });
 
@@ -130,7 +125,7 @@ public class CreateProjectActivity extends AppCompatActivity {
                         Toast.LENGTH_SHORT).show();
             }
         };
-        DatabaseReference databaseReference = database.getReference("project");
+        DatabaseReference databaseReference = database.getReference("projects");
         databaseReference.addChildEventListener(childEventListener);
 
 
@@ -147,22 +142,26 @@ public class CreateProjectActivity extends AppCompatActivity {
                 Toast.makeText(CreateProjectActivity.this, "MSG : "+stDescription, Toast.LENGTH_SHORT).show();
                 Toast.makeText(CreateProjectActivity.this, "MSG : "+stUser, Toast.LENGTH_SHORT).show();
 
-                DatabaseReference myRef = database.getReference("project").child(stEmail);
+                Log.d(TAG, "onClick: "+stTitle);
+                Log.d(TAG, "onClick: "+ stDate);
+                Log.d(TAG, "onClick: "+ stDescription);
+                Log.d(TAG, "onClick: "+ stUser);
+                DatabaseReference myRef = database.getReference("projects").child(stTitle);
 
-                Hashtable<String, String> numbers
+                Hashtable<String, String> tables
                         = new Hashtable<String, String>();
-                numbers.put("title", stTitle);
-                numbers.put("date", stDate);
-                numbers.put("description", stDescription);
-                numbers.put("with", stUser);
+                tables.put("title", stTitle);
+                tables.put("date", stDate);
+                tables.put("description", stDescription);
+                tables.put("with", stUser);
 
                 etTitle.setText("");
                 etDescription.setText("");
                 etUser.setText("");
 
-                myRef.setValue(numbers);
+                myRef.setValue(tables);
 
-                //Toast.makeText(this,"등록되었습니다.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(CreateProjectActivity.this,"등록되었습니다.", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -173,5 +172,15 @@ public class CreateProjectActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
+    }
+
+    public void processDatePickerResult(int year, int month, int day){
+        String month_string = Integer.toString(month+1);
+        String day_string = Integer.toString(day);
+        String year_string = Integer.toString(year);
+        String dateMessage = (year_string+"/"+month_string + "/" + day_string);
+
+        Toast.makeText(this,"Date: "+dateMessage,Toast.LENGTH_SHORT).show();
+        tvDeadline.setText(dateMessage);
     }
 }

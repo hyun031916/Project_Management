@@ -17,11 +17,11 @@ import java.text.DateFormat;
 import java.util.ArrayList;
 
 public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.MyViewHolder> {
-    private ArrayList<Project> mDataset;    //데이터 보관
+    private ArrayList<CProject> mDataset;    //데이터 보관
     Context context;
     FirebaseStorage storage = FirebaseStorage.getInstance();
 
-    public ProjectAdapter(ArrayList<Project> mDataset) {
+    public ProjectAdapter(ArrayList<CProject> mDataset) {
         this.mDataset = mDataset;
     }
 
@@ -53,6 +53,7 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.MyViewHo
         holder.tvTitle.setText(mDataset.get(position).getTitle());
         holder.tvDate.setText(mDataset.get(position).getDate());
         holder.tvDescription.setText(mDataset.get(position).getDescription());
+
     }
 
     @Override

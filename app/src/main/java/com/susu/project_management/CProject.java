@@ -1,13 +1,13 @@
 package com.susu.project_management;
 
-public class Project {
+public class CProject {
     String email;
     String title;
     String date;
     String description;
     String user;
 
-    public Project(String email, String title, String date, String description, String user) {
+    public CProject(String email, String title, String date, String description, String user) {
         this.email = email;
         this.title = title;
         this.date = date;
@@ -15,7 +15,7 @@ public class Project {
         this.user = user;
     }
 
-    public Project() {
+    public CProject() {
     }
 
     public String getEmail() {

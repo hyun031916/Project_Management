@@ -41,15 +41,9 @@ public class CreateProjectActivity extends AppCompatActivity {
     EditText etUser;
     TextView project_page;
     Button btn_cancel;
-    File tmpFile;
 
-    private FirebaseAuth mAuth;
-    ProgressBar progressBar;
     FirebaseDatabase database;
     String stEmail;
-    File localFile;
-    int REQUEST_IMAGE_CODE = 1001;
-    int REQUEST_EXTERNAL_STORAGE_PERMISSION = 1002;
     SharedPreferences sharedPreferences;
 
     ArrayList<Project> projectArrayList;
@@ -96,9 +90,12 @@ public class CreateProjectActivity extends AppCompatActivity {
                 String stTitle = project.getTitle();
                 String stDate = project.getDate();
                 String stDescription = project.getDescription();
-                Log.d(TAG, "stEmail: " + stTitle);
+                String stUser = project.getUser();
+                Log.d(TAG, "stEmail: " + stEmail);
+                Log.d(TAG, "stTitle: " + stTitle);
                 Log.d(TAG, "stText: " + stDate);
                 Log.d(TAG, "stDescription: " + stDescription);
+                Log.d(TAG, "stUser: "+stUser);
                 projectArrayList.add(project);
             }
 
@@ -146,10 +143,11 @@ public class CreateProjectActivity extends AppCompatActivity {
                 Log.d(TAG, "onClick: "+ stDate);
                 Log.d(TAG, "onClick: "+ stDescription);
                 Log.d(TAG, "onClick: "+ stUser);
-                DatabaseReference myRef = database.getReference("projects").child(stTitle);
+                DatabaseReference myRef = database.getReference("project").child(stTitle);
 
                 Hashtable<String, String> tables
                         = new Hashtable<String, String>();
+                tables.put("email", stEmail);
                 tables.put("title", stTitle);
                 tables.put("date", stDate);
                 tables.put("description", stDescription);

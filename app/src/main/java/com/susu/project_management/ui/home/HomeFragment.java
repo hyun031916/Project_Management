@@ -27,6 +27,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.susu.project_management.CProject;
 import com.susu.project_management.Project;
 import com.susu.project_management.ProjectAdapter;
 import com.susu.project_management.R;
@@ -41,11 +42,12 @@ public class HomeFragment extends Fragment {
 
     private DashboardViewModel homeViewModel;
     private static final String TAG = "HomeFragment";
-    private ArrayList<Project> projectArrayList;
+    private ArrayList<CProject> projectArrayList;
     private int count = -1;
     private RecyclerView mRecyclerView;
     private ProjectAdapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
+    private String stEmail;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -81,12 +83,18 @@ public class HomeFragment extends Fragment {
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(), mLinearLayoutManager.getOrientation());
         mRecyclerView.addItemDecoration(dividerItemDecoration);
 
+        projectArrayList = new ArrayList<>();
+        //유저 이메일 받아오기
+        Bundle extra = getArguments();
+        if(extra != null)
+            stEmail = extra.getString("email");
+
         Button btnInsert = (Button)root.findViewById(R.id.btnInsertProject);
         btnInsert.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 count++;
-                Project data = new Project(count+"", "날짜 : ", "설명 : ");
+                CProject data = new CProject(stEmail.toString(), count+"", "날짜 : ", "설명 : ", "유저");
                 projectArrayList.add(data);
                 mAdapter.notifyDataSetChanged();
             }

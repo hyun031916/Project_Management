@@ -42,7 +42,7 @@ public class HomeFragment extends Fragment {
 
     private DashboardViewModel homeViewModel;
     private static final String TAG = "HomeFragment";
-    private ArrayList<CProject> projectArrayList;
+    private ArrayList<Project> projectArrayList;
     private int count = -1;
     private RecyclerView mRecyclerView;
     private ProjectAdapter mAdapter;
@@ -94,7 +94,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 count++;
-                CProject data = new CProject(stEmail.toString(), count+"", "날짜 : ", "설명 : ", "유저");
+                Project data = new Project(stEmail.toString(), count+"", "날짜 : ", "설명 : ", "유저");
                 projectArrayList.add(data);
                 mAdapter.notifyDataSetChanged();
             }

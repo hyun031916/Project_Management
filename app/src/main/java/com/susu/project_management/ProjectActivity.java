@@ -3,6 +3,7 @@ package com.susu.project_management;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -29,14 +30,12 @@ public class ProjectActivity extends AppCompatActivity {
     private static final String TAG = "ProjectActivity";
     private RecyclerView recyclerView;
     private ProjectAdapter mAdapter;
-    ArrayList<CProject> projectArrayList;
+    private ArrayList<Project> projectArrayList;
     private RecyclerView.LayoutManager layoutManager;
     private int count = -1;
     private DatabaseReference mDatabase;
     TextView project_page;
     FirebaseDatabase database;
-    String stEmail;
-    String stTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,40 +43,47 @@ public class ProjectActivity extends AppCompatActivity {
         setContentView(R.layout.activity_project);
         database = FirebaseDatabase.getInstance();
         
-        recyclerView = (RecyclerView)findViewById(R.id.project_recycler_view); 
+        recyclerView = (RecyclerView)findViewById(R.id.project_recycler_view);
         recyclerView.setHasFixedSize(true);
-        layoutManager = new LinearLayoutManager(this);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
+        projectArrayList = new ArrayList<>();
+
+        mAdapter = new ProjectAdapter(projectArrayList);
+        recyclerView.setAdapter(mAdapter);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
+                layoutManager.getOrientation());
+        recyclerView.addItemDecoration(dividerItemDecoration);
         Button btnInsert = (Button)findViewById(R.id.btnInsertProject);
         btnInsert.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                count++;
-//                Project data = new Project(count+"", "날짜 : ", "설명 : ");
-//                projectArrayList.add(data);
-//                mAdapter.notifyDataSetChanged();
+                count++;
+                Project data = new Project("이메일", count+"k", "날짜 : ", "설명 : ", "dd");
+                projectArrayList.add(data);
+                mAdapter.notifyDataSetChanged();
 
-                Intent i = new Intent(ProjectActivity.this, CreateProjectActivity.class);
-                startActivity(i);
+//                Intent i = new Intent(ProjectActivity.this, CreateProjectActivity.class);
+//                startActivity(i);
             }
         });
-
-//        database.getReference("project").child(stTitle);
-        Log.d(TAG, "onCreate: "+ stTitle);
-        ValueEventListener postListner = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                CProject project = snapshot.getValue(CProject.class);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Log.w(TAG, "onCancelled: ", error.toException());
-            }
-        };
-        mDatabase.addValueEventListener(postListner);
-//        CProject project = new CProject();
+//
+////        database.getReference("project").child(stTitle);
+//        Log.d(TAG, "onCreate: "+ stTitle);
+//        ValueEventListener postListener = new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                Project project = snapshot.getValue(Project.class);
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//                Log.w(TAG, "onCancelled: ", error.toException());
+//            }
+//        };
+//        mDatabase.addValueEventListener(postListener);
+//        Project project = new Project();
 //        DatabaseReference ref = database.getReference("project").child(stTitle);
     }
 }

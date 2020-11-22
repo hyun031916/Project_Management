@@ -77,7 +77,7 @@ public class HomeFragment extends Fragment {
 
         projectArrayList = new ArrayList<>();
 
-        mAdapter = new ProjectAdapter(projectArrayList);
+        mAdapter = new ProjectAdapter(projectArrayList, getContext());
         mRecyclerView.setAdapter(mAdapter);
 
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(), mLinearLayoutManager.getOrientation());

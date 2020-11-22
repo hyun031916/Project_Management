@@ -32,58 +32,70 @@ public class ProjectActivity extends AppCompatActivity {
     private ProjectAdapter mAdapter;
     private ArrayList<Project> projectArrayList;
     private RecyclerView.LayoutManager layoutManager;
-    private int count = -1;
-    private DatabaseReference mDatabase;
-    TextView project_page;
-    FirebaseDatabase database;
+    private FirebaseDatabase database;
+    private DatabaseReference databaseReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_project);
-        database = FirebaseDatabase.getInstance();
         
         recyclerView = (RecyclerView)findViewById(R.id.project_recycler_view);
-        recyclerView.setHasFixedSize(true);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerView.setHasFixedSize(true); //리사이클러뷰 기존 성능 강화
+        layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        projectArrayList = new ArrayList<>();
+        projectArrayList = new ArrayList<>();   //Proejct 객체를 어댑터에 담을 어레이 리스트
 
-        mAdapter = new ProjectAdapter(projectArrayList);
+
+        database = FirebaseDatabase.getInstance();  //파이어베이스 데이터베이스 연동
+        databaseReference = database.getReference("project/java");   //DB 테이블 연결
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                //파이어베이스 데이터베이스의 데이터 받아오는 곳
+                projectArrayList.clear(); //기존 배열리스트가 존재하지 않게 초기화
+                Log.d(TAG, "onDataChange: "+snapshot.getValue().toString());
+                for(DataSnapshot dataSnapshot: snapshot.getChildren()){
+                    //반복문으로 데이터 list 추출
+                    String email = dataSnapshot.child("email").getValue(String.class);
+                    String title = dataSnapshot.child("title").getValue(String.class);
+                    String date = dataSnapshot.child("date").getValue(String.class);
+                    String description = dataSnapshot.child("description").getValue(String.class);
+                    String user = dataSnapshot.child("with").getValue(String.class);
+
+                    Log.d(TAG, "onDataChange: "+email+title+date+description+user);
+//                    String key = dataSnapshot.getKey();
+//                    Project project = dataSnapshot.getValue(Project.class); //만들어둔 Project 객체 데이터 담기
+//                    Log.d(TAG, "onDataChange: "+project);
+//                    projectArrayList.add(project);  //담은 데이터를 배열 리스트에 넣어 리사이클러뷰에 보낼 준비
+                }
+//                adapter.notifyDataSetChanged(); //리스트 저장 및 새로고침 시 반영됨
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        mAdapter = new ProjectAdapter(projectArrayList, this);
         recyclerView.setAdapter(mAdapter);
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
-                layoutManager.getOrientation());
-        recyclerView.addItemDecoration(dividerItemDecoration);
         Button btnInsert = (Button)findViewById(R.id.btnInsertProject);
         btnInsert.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                count++;
-                Project data = new Project("이메일", count+"k", "날짜 : ", "설명 : ", "dd");
-                projectArrayList.add(data);
-                mAdapter.notifyDataSetChanged();
+//             count++;
+////                Project data = new Project("이메일", count+"k", "날짜 : ", "설명 : ", "dd");
+////                projectArrayList.add(data);
+////                mAdapter.notifyDataSetChanged();   count++;
+//                Project data = new Project("이메일", count+"k", "날짜 : ", "설명 : ", "dd");
+//                projectArrayList.add(data);
+//                mAdapter.notifyDataSetChanged();
 
-//                Intent i = new Intent(ProjectActivity.this, CreateProjectActivity.class);
-//                startActivity(i);
+                Intent i = new Intent(ProjectActivity.this, CreateProjectActivity.class);
+                startActivity(i);
             }
         });
-//
-////        database.getReference("project").child(stTitle);
-//        Log.d(TAG, "onCreate: "+ stTitle);
-//        ValueEventListener postListener = new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                Project project = snapshot.getValue(Project.class);
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//                Log.w(TAG, "onCancelled: ", error.toException());
-//            }
-//        };
-//        mDatabase.addValueEventListener(postListener);
-//        Project project = new Project();
-//        DatabaseReference ref = database.getReference("project").child(stTitle);
     }
 }

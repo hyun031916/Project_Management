@@ -10,6 +10,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.susu.project_management.ui.home.HomeFragment;
 
@@ -17,12 +19,16 @@ import java.text.DateFormat;
 import java.util.ArrayList;
 
 public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.MyViewHolder> {
-    private ArrayList<Project> mDataset = new ArrayList<>();    //데이터 보관
-    Context context;
+    private ArrayList<Project> arrayList;  //데이터 보관
+    private Context context;    //어댑터에서 액티비티 액션 가져올 때 필요함. 선택한 액티비티에 대한 context 가져옴
     FirebaseStorage storage = FirebaseStorage.getInstance();
+    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();    //데이터베이스 위치한 곳
+    DatabaseReference mRef = databaseReference.child("project");    //project
 
-    public ProjectAdapter(ArrayList<Project> mDataset) {
-        this.mDataset = mDataset;
+
+    public ProjectAdapter(ArrayList<Project> mDataset, Context context) {
+        this.arrayList = mDataset;
+        this.context = context;
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
@@ -47,24 +53,26 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.MyViewHo
     public ProjectAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
         View v = (View) LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.project_item_view, parent, false);
-        MyViewHolder vh = new MyViewHolder(v);
+                .inflate(R.layout.project_item_view, parent, false);    //아이템의 뷰 객체 생성
+        MyViewHolder vh = new MyViewHolder(v);  //각각의 아이템을 위한 뷰를 담고 있는 뷰 홀더 객체 반환
         return vh;
     }
 
+    //홀더가 갖고 있는 뷰에 데이터 세팅
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        holder.tvEmail.setText(mDataset.get(position).getEmail());
-        holder.tvTitle.setText(mDataset.get(position).getTitle());
-        holder.tvDate.setText(mDataset.get(position).getDate());
-        holder.tvDescription.setText(mDataset.get(position).getDescription());
-        holder.tvUser.setText(mDataset.get(position).getUser());
+        holder.tvEmail.setText(arrayList.get(position).getEmail());
+        holder.tvTitle.setText(arrayList.get(position).getTitle());
+        holder.tvDate.setText(arrayList.get(position).getDate());
+        holder.tvDescription.setText(arrayList.get(position).getDescription());
+        holder.tvUser.setText(arrayList.get(position).getUser());
 
     }
 
+    //arrayList가 null이 아니면 사이즈를, null이면 0을 반환하라는 뜻.
     @Override
     public int getItemCount() {
-        return (null!= mDataset ? mDataset.size():0);
+        return (null!= arrayList ? arrayList.size():0);
     }
 
 //    @Override
@@ -72,7 +80,7 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.MyViewHo
 //        return itmes.size();
 //    }
     public void addItems(Project project){
-        mDataset.add(project);
+        arrayList.add(project);
         notifyDataSetChanged();
     }
 }

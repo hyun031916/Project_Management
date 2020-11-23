@@ -1,5 +1,8 @@
 package com.susu.project_management;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,8 +13,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
+    private static final String TAG = "MyAdapter";
     private ArrayList<Chat> mDataset;
     String stMyEmail = "";
+    SharedPreferences sharedPref = getActivity().getSharedPreferences("shared", Context.MODE_PRIVATE);
+    String stEmail = sharedPref.getString("email", "");
+
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -28,6 +35,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     @Override
     public int getItemViewType(int position) {
 //        return super.getItemViewType(position);
+        Log.d(TAG, "email1: "+mDataset.get(position).email);
+        Log.d(TAG, "email2: "+stMyEmail);
         if(mDataset.get(position).email.equals(stMyEmail)){
             return 1;
         }else{
@@ -46,12 +55,14 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     public MyAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent,
                                                      int viewType) {
         // create a new view
-        View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.my_text_view, parent, false);
-
+        View v;
         if(viewType == 1){
             v = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.right_text_view, parent, false);
+        }else{
+            v = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.my_text_view, parent, false);
+
         }
 
         MyViewHolder vh = new MyViewHolder(v);

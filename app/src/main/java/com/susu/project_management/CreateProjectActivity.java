@@ -143,6 +143,7 @@ public class CreateProjectActivity extends AppCompatActivity {
                 Log.d(TAG, "onClick: "+ stDate);
                 Log.d(TAG, "onClick: "+ stDescription);
                 Log.d(TAG, "onClick: "+ stUser);
+                Log.d(TAG, "onClick: "+ stEmail);
                 DatabaseReference myRef = database.getReference("project").child(stTitle);
 
                 Hashtable<String, String> tables

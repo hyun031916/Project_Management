@@ -1,9 +1,12 @@
 package com.susu.project_management;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -38,6 +41,7 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.MyViewHo
         public TextView tvDate;
         public TextView tvDescription;
         public TextView tvUser;
+        public Button btnChat;
         public MyViewHolder(View v) {
             super(v);
             tvEmail = v.findViewById(R.id.tvEmail);
@@ -45,6 +49,7 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.MyViewHo
             tvDate = v.findViewById(R.id.tvDate);
             tvDescription = v.findViewById(R.id.tvDescription);
             tvUser = v.findViewById(R.id.tvUser);
+            btnChat = v.findViewById(R.id.btnChat);
         }
     }
 
@@ -66,6 +71,13 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.MyViewHo
         holder.tvDate.setText(arrayList.get(position).getDate());
         holder.tvDescription.setText(arrayList.get(position).getDescription());
         holder.tvUser.setText(arrayList.get(position).getUser());
+        holder.btnChat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(context, ChatActivity.class);
+                ((Activity)context).startActivity(i);
+            }
+        });
 
     }
 

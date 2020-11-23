@@ -49,14 +49,14 @@ public class ProjectActivity extends AppCompatActivity {
 
 
         database = FirebaseDatabase.getInstance();  //파이어베이스 데이터베이스 연동
-        databaseReference = database.getReference("project/java");   //DB 테이블 연결
+        databaseReference = database.getReference("project");   //DB 테이블 연결
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 //파이어베이스 데이터베이스의 데이터 받아오는 곳
                 projectArrayList.clear(); //기존 배열리스트가 존재하지 않게 초기화
                 Log.d(TAG, "onDataChange: "+snapshot.getValue().toString());
-//                for(DataSnapshot dataSnapshot: snapshot.getChildren()){
+                for(DataSnapshot dataSnapshot: snapshot.getChildren()){
                     //반복문으로 데이터 list 추출
 //                    String email = snapshot.child("email").getValue(String.class);
 //                    String title = snapshot.child("title").getValue(String.class);
@@ -65,11 +65,11 @@ public class ProjectActivity extends AppCompatActivity {
 //                    String user = snapshot.child("with").getValue(String.class);
 //
 //                    Log.d(TAG, "onDataChange: "+email+title+date+description+user);
-//                    String key = snapshot.getKey();
-                    Project project = snapshot.getValue(Project.class); //만들어둔 Project 객체 데이터 담기
-//                    Log.d(TAG, "onDataChange: "+project);
+                    String key = dataSnapshot.getKey();
+                    Project project = dataSnapshot.getValue(Project.class); //만들어둔 Project 객체 데이터 담기
+                    Log.d(TAG, "onDataChange: "+ key);
                     projectArrayList.add(project);  //담은 데이터를 배열 리스트에 넣어 리사이클러뷰에 보낼 준비
-//                }
+                }
                 mAdapter.notifyDataSetChanged(); //리스트 저장 및 새로고침 시 반영됨
             }
 

@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -32,7 +33,7 @@ public class ChatActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager layoutManager;
     Button btnSend;
     EditText etText;
-    String stEmail;
+    String email;
     FirebaseDatabase database;
     ArrayList<Chat> chatArrayList;
 
@@ -43,7 +44,8 @@ public class ChatActivity extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();
 
         chatArrayList = new ArrayList<>();
-        stEmail = getIntent().getStringExtra("stEmail");
+        Intent intent = getIntent();
+        email = intent.getExtras().getString("email");
         btnSend = (Button) findViewById(R.id.btnSend);
 
         etText = (EditText) findViewById(R.id.etText);
@@ -67,9 +69,10 @@ public class ChatActivity extends AppCompatActivity {
 
         // specify an adapter (see also next example)
         String[] myDataset = {"test1", "test2", "test3"};
-        mAdapter = new MyAdapter(chatArrayList, stEmail);
-        Log.d(TAG, "onCreate: "+stEmail);
+        mAdapter = new MyAdapter(chatArrayList, email);
+        Log.d(TAG, "onCreate: "+email);
         recyclerView.setAdapter(mAdapter);
+
 
         ChildEventListener childEventListener = new ChildEventListener() {
             @Override
@@ -145,10 +148,11 @@ public class ChatActivity extends AppCompatActivity {
 
                 Hashtable<String, String> numbers
                         = new Hashtable<String, String>();
-                numbers.put("email", stEmail);
+                numbers.put("email", email);
                 numbers.put("text", stText);
 
                 myRef.setValue(numbers);
+                etText.setText("");
             }
         });
     }

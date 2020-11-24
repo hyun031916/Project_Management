@@ -71,10 +71,12 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.MyViewHo
         holder.tvDate.setText(arrayList.get(position).getDate());
         holder.tvDescription.setText(arrayList.get(position).getDescription());
         holder.tvUser.setText(arrayList.get(position).getUser());
+        String email = arrayList.get(position).getEmail();
         holder.btnChat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(context, ChatActivity.class);
+                i.putExtra("email", email);
                 ((Activity)context).startActivity(i);
             }
         });

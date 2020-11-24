@@ -63,10 +63,10 @@ public class ProjectActivity extends AppCompatActivity {
 //                    String title = snapshot.child("title").getValue(String.class);
 //                    String date = snapshot.child("date").getValue(String.class);
 //                    String description = snapshot.child("description").getValue(String.class);
-//                    String user = snapshot.child("with").getValue(String.class);
+                    String user = dataSnapshot.child("with").getValue(String.class);
 //
-//                    Log.d(TAG, "onDataChange: "+email+title+date+description+user);
-                    if(dataSnapshot.child("email").getValue(String.class).equals(email)) {
+                    Log.d(TAG, "with: "+user);
+                    if(dataSnapshot.child("email").getValue(String.class).equals(email)|| user.equals(email)) {
                         String key = dataSnapshot.getKey();
                         Project project = dataSnapshot.getValue(Project.class); //만들어둔 Project 객체 데이터 담기
                         Log.d(TAG, "onDataChange: " + key);

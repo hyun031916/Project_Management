@@ -1,6 +1,7 @@
 package com.susu.project_management;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,9 +16,7 @@ import java.util.ArrayList;
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     private static final String TAG = "MyAdapter";
     private ArrayList<Chat> mDataset;
-    String stMyEmail = "";
-    SharedPreferences sharedPref = getActivity().getSharedPreferences("shared", Context.MODE_PRIVATE);
-    String stEmail = sharedPref.getString("email", "");
+    String stMyEmail;
 
 
     // Provide a reference to the views for each data item

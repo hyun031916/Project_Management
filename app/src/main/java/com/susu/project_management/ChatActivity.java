@@ -43,7 +43,7 @@ public class ChatActivity extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();
 
         chatArrayList = new ArrayList<>();
-        stEmail = getIntent().getStringExtra("email");
+        stEmail = getIntent().getStringExtra("stEmail");
         btnSend = (Button) findViewById(R.id.btnSend);
 
         etText = (EditText) findViewById(R.id.etText);
@@ -68,6 +68,7 @@ public class ChatActivity extends AppCompatActivity {
         // specify an adapter (see also next example)
         String[] myDataset = {"test1", "test2", "test3"};
         mAdapter = new MyAdapter(chatArrayList, stEmail);
+        Log.d(TAG, "onCreate: "+stEmail);
         recyclerView.setAdapter(mAdapter);
 
         ChildEventListener childEventListener = new ChildEventListener() {

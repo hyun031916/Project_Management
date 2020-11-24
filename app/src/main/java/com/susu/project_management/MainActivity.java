@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
                                     editor.commit();
 
                                     Intent i = new Intent(MainActivity.this, ProjectActivity.class);
-//                                    i.putExtra("email", stEmail);
+                                    i.putExtra("email", stUserEmail);
                                     startActivity(i);
 //                                    updateUI(user);
                                 } else {

@@ -47,7 +47,8 @@ public class ProjectActivity extends AppCompatActivity {
 
         projectArrayList = new ArrayList<>();   //Proejct 객체를 어댑터에 담을 어레이 리스트
 
-
+        Intent intent = getIntent();
+        String email = intent.getExtras().getString("email");
         database = FirebaseDatabase.getInstance();  //파이어베이스 데이터베이스 연동
         databaseReference = database.getReference("project");   //DB 테이블 연결
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -65,10 +66,12 @@ public class ProjectActivity extends AppCompatActivity {
 //                    String user = snapshot.child("with").getValue(String.class);
 //
 //                    Log.d(TAG, "onDataChange: "+email+title+date+description+user);
-                    String key = dataSnapshot.getKey();
-                    Project project = dataSnapshot.getValue(Project.class); //만들어둔 Project 객체 데이터 담기
-                    Log.d(TAG, "onDataChange: "+ key);
-                    projectArrayList.add(project);  //담은 데이터를 배열 리스트에 넣어 리사이클러뷰에 보낼 준비
+                    if(dataSnapshot.child("email").getValue(String.class).equals(email)) {
+                        String key = dataSnapshot.getKey();
+                        Project project = dataSnapshot.getValue(Project.class); //만들어둔 Project 객체 데이터 담기
+                        Log.d(TAG, "onDataChange: " + key);
+                        projectArrayList.add(project);  //담은 데이터를 배열 리스트에 넣어 리사이클러뷰에 보낼 준비
+                    }
                 }
                 mAdapter.notifyDataSetChanged(); //리스트 저장 및 새로고침 시 반영됨
             }

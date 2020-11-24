@@ -34,7 +34,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     @Override
     public int getItemViewType(int position) {
 //        return super.getItemViewType(position);
-        Log.d(TAG, "email1: "+mDataset.get(position).email);
+        Log.d(TAG, "email1: "+mDataset.get(position).getEmail());
         Log.d(TAG, "email2: "+stMyEmail);
         if(mDataset.get(position).email.equals(stMyEmail)){
             return 1;
@@ -74,6 +74,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
         holder.textView.setText(mDataset.get(position).getText());
+        Log.d(TAG, "onBindViewHolder: "+mDataset.get(position).getText());
 
     }
 

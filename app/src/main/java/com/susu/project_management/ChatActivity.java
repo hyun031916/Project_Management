@@ -4,7 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -20,6 +22,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import org.w3c.dom.Comment;
 
+import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -36,6 +39,7 @@ public class ChatActivity extends AppCompatActivity {
     String email, title;
     FirebaseDatabase database;
     ArrayList<Chat> chatArrayList;
+    String datetime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,18 +82,24 @@ public class ChatActivity extends AppCompatActivity {
         ChildEventListener childEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
-                Log.d(TAG, "onChildAdded:" + dataSnapshot.getKey());
+                Log.d(TAG, "3:" + dataSnapshot.getKey());
                 chatArrayList.clear();
-                Log.d(TAG, "onChildAdded: "+dataSnapshot.getValue().toString());
+                Log.d(TAG, "2: "+dataSnapshot.getValue().toString());
                 // A new comment has been added, add it to the displayed list
-                Chat chat = dataSnapshot.getValue(Chat.class);  //만들어둔 Chat 객체 데이터 담기
-                String commentKey = dataSnapshot.getKey();
-                String stEmail = chat.getEmail();
-                String stText = chat.getText();
-                Log.d(TAG, "stEmail: " + stEmail);
-                Log.d(TAG, "stText: " + stText);
-                chatArrayList.add(chat);    //담은 데이터를 배열 리스트에 넣어 리사이클러뷰에 보낼 준비
-                mAdapter.notifyDataSetChanged();
+//                for(DataSnapshot dataSnapshot1: dataSnapshot.getChildren()){
+                if(dataSnapshot.getKey().equals(title)) {
+                    String commentKey = dataSnapshot.getKey();
+                    Log.d(TAG, "1:" + commentKey);
+                    Chat chat = dataSnapshot.getValue(Chat.class);  //만들어둔 Chat 객체 데이터 담기
+
+                    String stEmail = chat.getEmail();
+                    String stText = chat.getText();
+                    Log.d(TAG, "stEmail: " + stEmail);
+                    Log.d(TAG, "stText: " + stText);
+                    chatArrayList.add(chat);    //담은 데이터를 배열 리스트에 넣어 리사이클러뷰에 보낼 준비
+                    mAdapter.notifyDataSetChanged();
+//                }
+                }
             }
 
             @Override
@@ -143,14 +153,18 @@ public class ChatActivity extends AppCompatActivity {
 
                 Calendar c = Calendar.getInstance();
                 SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-                String datetime = dateformat.format(c.getTime());
+                datetime = dateformat.format(c.getTime());
                 System.out.println(datetime);
                 Log.d(TAG, "title: "+title);
                 DatabaseReference myRef = database.getReference("project").child(title).child(datetime);
 
+                SharedPreferences sharedPreferences = getSharedPreferences("shared", Context.MODE_PRIVATE);
+                String stEmail = sharedPreferences.getString("email", "");
+                Log.d(TAG, "stEmail: "+stEmail);
                 Hashtable<String, String> numbers
                         = new Hashtable<String, String>();
-                numbers.put("email", email);
+                numbers.put("email", stEmail);
+                Log.d(TAG, "eeeeee: "+stEmail);
                 numbers.put("text", stText);
 
                 myRef.setValue(numbers);

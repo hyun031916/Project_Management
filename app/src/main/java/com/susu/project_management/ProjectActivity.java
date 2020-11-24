@@ -23,6 +23,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.database.logging.LogWrapper;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class ProjectActivity extends AppCompatActivity {
@@ -34,6 +35,7 @@ public class ProjectActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager layoutManager;
     private FirebaseDatabase database;
     private DatabaseReference databaseReference;
+    String title;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,12 +62,13 @@ public class ProjectActivity extends AppCompatActivity {
                 for(DataSnapshot dataSnapshot: snapshot.getChildren()){
                     //반복문으로 데이터 list 추출
 //                    String email = snapshot.child("email").getValue(String.class);
-//                    String title = snapshot.child("title").getValue(String.class);
+//                    title = dataSnapshot.child("title").getValue(String.class);
 //                    String date = snapshot.child("date").getValue(String.class);
 //                    String description = snapshot.child("description").getValue(String.class);
                     String user = dataSnapshot.child("with").getValue(String.class);
 //
                     Log.d(TAG, "with: "+user);
+//                    Log.d(TAG, "titletitle"+ title);
                     if(dataSnapshot.child("email").getValue(String.class).equals(email)|| user.equals(email)) {
                         String key = dataSnapshot.getKey();
                         Project project = dataSnapshot.getValue(Project.class); //만들어둔 Project 객체 데이터 담기
@@ -97,6 +100,7 @@ public class ProjectActivity extends AppCompatActivity {
 //                mAdapter.notifyDataSetChanged();
 
                 Intent i = new Intent(ProjectActivity.this, CreateProjectActivity.class);
+
                 startActivity(i);
             }
         });

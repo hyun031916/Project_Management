@@ -33,7 +33,7 @@ public class ChatActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager layoutManager;
     Button btnSend;
     EditText etText;
-    String email;
+    String email, title;
     FirebaseDatabase database;
     ArrayList<Chat> chatArrayList;
 
@@ -46,6 +46,7 @@ public class ChatActivity extends AppCompatActivity {
         chatArrayList = new ArrayList<>();
         Intent intent = getIntent();
         email = intent.getExtras().getString("email");
+        title = intent.getExtras().getString("title");
         btnSend = (Button) findViewById(R.id.btnSend);
 
         etText = (EditText) findViewById(R.id.etText);
@@ -78,15 +79,16 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
                 Log.d(TAG, "onChildAdded:" + dataSnapshot.getKey());
-
+                chatArrayList.clear();
+                Log.d(TAG, "onChildAdded: "+dataSnapshot.getValue().toString());
                 // A new comment has been added, add it to the displayed list
-                Chat chat = dataSnapshot.getValue(Chat.class);
+                Chat chat = dataSnapshot.getValue(Chat.class);  //만들어둔 Chat 객체 데이터 담기
                 String commentKey = dataSnapshot.getKey();
                 String stEmail = chat.getEmail();
                 String stText = chat.getText();
-                Log.d(TAG, "stEmail: "+stEmail);
-                Log.d(TAG, "stText: "+stText);
-                chatArrayList.add(chat);
+                Log.d(TAG, "stEmail: " + stEmail);
+                Log.d(TAG, "stText: " + stText);
+                chatArrayList.add(chat);    //담은 데이터를 배열 리스트에 넣어 리사이클러뷰에 보낼 준비
                 mAdapter.notifyDataSetChanged();
             }
 
@@ -129,7 +131,7 @@ public class ChatActivity extends AppCompatActivity {
                         Toast.LENGTH_SHORT).show();
             }
         };
-        DatabaseReference ref = database.getReference("message");
+        DatabaseReference ref = database.getReference("project");
         ref.addChildEventListener(childEventListener);
 
         btnSend.setOnClickListener(new View.OnClickListener() {
@@ -143,8 +145,8 @@ public class ChatActivity extends AppCompatActivity {
                 SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
                 String datetime = dateformat.format(c.getTime());
                 System.out.println(datetime);
-
-                DatabaseReference myRef = database.getReference("message").child(datetime);
+                Log.d(TAG, "title: "+title);
+                DatabaseReference myRef = database.getReference("project").child(title).child(datetime);
 
                 Hashtable<String, String> numbers
                         = new Hashtable<String, String>();

@@ -3,6 +3,7 @@ package com.susu.project_management;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +28,7 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.MyViewHo
     FirebaseStorage storage = FirebaseStorage.getInstance();
     DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();    //데이터베이스 위치한 곳
     DatabaseReference mRef = databaseReference.child("project");    //project
-
+    private static final String TAG = "ProjectAdapter";
 
     public ProjectAdapter(ArrayList<Project> mDataset, Context context) {
         this.arrayList = mDataset;
@@ -77,6 +78,8 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.MyViewHo
             public void onClick(View v) {
                 Intent i = new Intent(context, ChatActivity.class);
                 i.putExtra("email", email);
+                i.putExtra("title", arrayList.get(position).getTitle());
+                Log.d(TAG, "onClick: "+arrayList.get(position).getTitle());
                 ((Activity)context).startActivity(i);
             }
         });

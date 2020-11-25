@@ -17,6 +17,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     private static final String TAG = "MyAdapter";
     private ArrayList<Chat> mDataset;
     String stMyEmail;
+    private Context context;    //어댑터에서 액티비티 액션 가져올 때 필요함. 선택한 액티비티에 대한 context 가져옴
 
 
     // Provide a reference to the views for each data item
@@ -28,6 +29,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         public MyViewHolder(View v) {
             super(v);
             textView = v.findViewById(R.id.tvChat);
+            Log.d(TAG, "MyViewHolder: "+textView.toString());
         }
     }
 
@@ -44,9 +46,11 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public MyAdapter(ArrayList<Chat> myDataset, String stEmail) {
+    public MyAdapter(ArrayList<Chat> myDataset, ChatActivity context, String stEmail) {
         mDataset = myDataset;
+        this.context = context;
         this.stMyEmail = stEmail;
+        this.notifyDataSetChanged();
     }
 
     // Create new views (invoked by the layout manager)
@@ -69,6 +73,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     }
 
     // Replace the contents of a view (invoked by the layout manager)
+    //아이템 불러오기
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         // - get element from your dataset at this position
@@ -78,6 +83,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
     }
 
+    //아이템 길이 수 세기
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {

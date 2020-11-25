@@ -4,6 +4,14 @@ public class Chat {
     String email;
     String text;
 
+    public Chat() {
+    }
+
+    public Chat(String email, String text) {
+        this.email = email;
+        this.text = text;
+    }
+
     public String getEmail() {
         return email;
     }
@@ -19,4 +27,5 @@ public class Chat {
     public void setText(String text) {
         this.text = text;
     }
+
 }

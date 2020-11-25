@@ -32,7 +32,7 @@ public class ChatActivity extends AppCompatActivity {
     private static final String TAG = "ChatActivity";
     Button btnFinish;
     private RecyclerView recyclerView;
-    MyAdapter mAdapter;
+    private MyAdapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
     Button btnSend;
     EditText etText;
@@ -47,7 +47,8 @@ public class ChatActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chat);
         database = FirebaseDatabase.getInstance();
 
-        chatArrayList = new ArrayList<>();
+        chatArrayList = new ArrayList<>();  //객체를 어댑터에 담을 어레이 리스트
+
         Intent intent = getIntent();
         email = intent.getExtras().getString("email");
         title = intent.getExtras().getString("title");
@@ -73,8 +74,7 @@ public class ChatActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
 
         // specify an adapter (see also next example)
-        String[] myDataset = {"test1", "test2", "test3"};
-        mAdapter = new MyAdapter(chatArrayList, email);
+        mAdapter = new MyAdapter(chatArrayList, this, email);
         Log.d(TAG, "onCreate: "+email);
         recyclerView.setAdapter(mAdapter);
 
@@ -83,43 +83,56 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
                 Log.d(TAG, "3:" + dataSnapshot.getKey());
-                chatArrayList.clear();
+//                chatArrayList.clear();
                 Log.d(TAG, "2: "+dataSnapshot.getValue().toString());
                 // A new comment has been added, add it to the displayed list
-//                for(DataSnapshot dataSnapshot1: dataSnapshot.getChildren()){
-                if(dataSnapshot.getKey().equals(title)) {
+                if(!dataSnapshot.getKey().equals("date") && !dataSnapshot.getKey().equals("description")
+                        && !dataSnapshot.getKey().equals("email")&& !dataSnapshot.getKey().equals("title")
+                        && !dataSnapshot.getKey().equals("with")) {
                     String commentKey = dataSnapshot.getKey();
                     Log.d(TAG, "1:" + commentKey);
                     Chat chat = dataSnapshot.getValue(Chat.class);  //만들어둔 Chat 객체 데이터 담기
-
                     String stEmail = chat.getEmail();
                     String stText = chat.getText();
                     Log.d(TAG, "stEmail: " + stEmail);
-                    Log.d(TAG, "stText: " + stText);
+                    Log.d(TAG, "onChildAdded: " + stText);
                     chatArrayList.add(chat);    //담은 데이터를 배열 리스트에 넣어 리사이클러뷰에 보낼 준비
-                    mAdapter.notifyDataSetChanged();
-//                }
                 }
+
+                mAdapter.notifyDataSetChanged();
+//                }
             }
 
             @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String previousChildName) {
-                Log.d(TAG, "onChildChanged:" + dataSnapshot.getKey());
+            public void onChildChanged(DataSnapshot snapshot, String previousChildName) {
+                Log.d(TAG, "onChildChanged:" + snapshot.getKey());
 
                 // A comment has changed, use the key to determine if we are displaying this
                 // comment and if so displayed the changed comment.
-
-
+                chatArrayList.clear(); //기존 배열리스트가 존재하지 않게 초기화
+                Log.d(TAG, "onDataChange: "+snapshot.getValue().toString());
+                if(!snapshot.getKey().equals("date") && !snapshot.getKey().equals("description")
+                        && !snapshot.getKey().equals("email")&& !snapshot.getKey().equals("title")
+                        && !snapshot.getKey().equals("with")) {
+                    String commentKey = snapshot.getKey();
+                    Log.d(TAG, "1:" + commentKey);
+                    Chat chat = snapshot.getValue(Chat.class);  //만들어둔 Chat 객체 데이터 담기
+                    String stEmail = chat.getEmail();
+                    String stText = chat.getText();
+                    Log.d(TAG, "stEmail: " + stEmail);
+                    Log.d(TAG, "onChildAdded: " + stText);
+                    chatArrayList.add(chat);    //담은 데이터를 배열 리스트에 넣어 리사이클러뷰에 보낼 준비
+                }
+                mAdapter.notifyDataSetChanged();
                 // ...
             }
 
             @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-                Log.d(TAG, "onChildRemoved:" + dataSnapshot.getKey());
+            public void onChildRemoved(DataSnapshot snapshot) {
+                Log.d(TAG, "onChildRemoved:" + snapshot.getKey());
 
                 // A comment has changed, use the key to determine if we are displaying this
                 // comment and if so remove it.
-                String commentKey = dataSnapshot.getKey();
 
                 // ...
             }
@@ -130,7 +143,6 @@ public class ChatActivity extends AppCompatActivity {
 
                 // A comment has changed position, use the key to determine if we are
                 // displaying this comment and if so move it.
-
                 // ...
             }
 
@@ -141,8 +153,10 @@ public class ChatActivity extends AppCompatActivity {
                         Toast.LENGTH_SHORT).show();
             }
         };
-        DatabaseReference ref = database.getReference("project");
+        DatabaseReference ref = database.getReference("project").child(title);
         ref.addChildEventListener(childEventListener);
+        mAdapter = new MyAdapter(chatArrayList, this, email);
+        recyclerView.setAdapter(mAdapter);
 
         btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -166,6 +180,7 @@ public class ChatActivity extends AppCompatActivity {
                 numbers.put("email", stEmail);
                 Log.d(TAG, "eeeeee: "+stEmail);
                 numbers.put("text", stText);
+                Log.d(TAG, "ssssss: "+stText);
 
                 myRef.setValue(numbers);
                 etText.setText("");

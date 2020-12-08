@@ -51,24 +51,22 @@ public class ProjectActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         String email = intent.getExtras().getString("email");
+
+
         database = FirebaseDatabase.getInstance();  //파이어베이스 데이터베이스 연동
         databaseReference = database.getReference("project");   //DB 테이블 연결
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 //파이어베이스 데이터베이스의 데이터 받아오는 곳
-                projectArrayList.clear(); //기존 배열리스트가 존재하지 않게 초기화
+//                projectArrayList.clear(); //기존 배열리스트가 존재하지 않게 초기화
                 Log.d(TAG, "onDataChange: "+snapshot.getValue().toString());
                 for(DataSnapshot dataSnapshot: snapshot.getChildren()){
                     //반복문으로 데이터 list 추출
-//                    String email = snapshot.child("email").getValue(String.class);
-//                    title = dataSnapshot.child("title").getValue(String.class);
-//                    String date = snapshot.child("date").getValue(String.class);
-//                    String description = snapshot.child("description").getValue(String.class);
                     String user = dataSnapshot.child("with").getValue(String.class);
 //
+                    Log.d(TAG, "data: "+dataSnapshot.getValue().toString());
                     Log.d(TAG, "with: "+user);
-//                    Log.d(TAG, "titletitle"+ title);
                     if(dataSnapshot.child("email").getValue(String.class).equals(email)|| user.equals(email)) {
                         String key = dataSnapshot.getKey();
                         Project project = dataSnapshot.getValue(Project.class); //만들어둔 Project 객체 데이터 담기
@@ -91,16 +89,8 @@ public class ProjectActivity extends AppCompatActivity {
         btnInsert.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//             count++;
-////                Project data = new Project("이메일", count+"k", "날짜 : ", "설명 : ", "dd");
-////                projectArrayList.add(data);
-////                mAdapter.notifyDataSetChanged();   count++;
-//                Project data = new Project("이메일", count+"k", "날짜 : ", "설명 : ", "dd");
-//                projectArrayList.add(data);
-//                mAdapter.notifyDataSetChanged();
 
                 Intent i = new Intent(ProjectActivity.this, CreateProjectActivity.class);
-
                 startActivity(i);
             }
         });

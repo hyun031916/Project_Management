@@ -87,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
 
                                     Intent i = new Intent(MainActivity.this, ProjectActivity.class);
                                     i.putExtra("email", stUserEmail);
+                                    Log.d(TAG, "이게 이메일이다.: "+stUserEmail);
                                     startActivity(i);
 //                                    updateUI(user);
                                 } else {
@@ -129,6 +130,7 @@ public class MainActivity extends AppCompatActivity {
                         .addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
+                                progressBar.setVisibility(View.GONE);
                                 if (task.isSuccessful()) {
                                     // Sign in success, update UI with the signed-in user's information
                                     Log.d(TAG, "createUserWithEmail:success");

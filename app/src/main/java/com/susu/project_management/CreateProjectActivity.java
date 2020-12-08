@@ -91,11 +91,6 @@ public class CreateProjectActivity extends AppCompatActivity {
                 String stDate = project.getDate();
                 String stDescription = project.getDescription();
                 String stUser = project.getUser();
-                Log.d(TAG, "stEmail: " + stEmail);
-                Log.d(TAG, "stTitle: " + stTitle);
-                Log.d(TAG, "stText: " + stDate);
-                Log.d(TAG, "stDescription: " + stDescription);
-                Log.d(TAG, "stUser: "+stUser);
                 projectArrayList.add(project);
             }
 

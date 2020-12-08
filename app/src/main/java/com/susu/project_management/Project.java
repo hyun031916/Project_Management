@@ -15,46 +15,25 @@ public class Project {
         this.user = user;
     }
 
-    public Project() {
-    }
+    public Project() {}
 
-    public String getEmail() {
-        return email;
-    }
+    public String getEmail() {return email;}
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+    public void setEmail(String email) {this.email = email;}
 
-    public String getTitle() {
-        return title;
-    }
+    public String getTitle() {return title;}
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
+    public void setTitle(String title) {this.title = title;}
 
-    public String getDate() {
-        return date;
-    }
+    public String getDate() {return date;}
 
-    public void setDate(String date) {
-        this.date = date;
-    }
+    public void setDate(String date) {this.date = date;}
 
-    public String getDescription() {
-        return description;
-    }
+    public String getDescription() {return description;}
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+    public void setDescription(String description) {this.description = description;}
 
-    public String getUser() {
-        return user;
-    }
+    public String getUser() {return user;}
 
-    public void setUser(String user) {
-        this.user = user;
-    }
+    public void setUser(String user) {this.user = user;}
 }

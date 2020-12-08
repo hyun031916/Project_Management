@@ -82,10 +82,7 @@ public class ChatActivity extends AppCompatActivity {
         ChildEventListener childEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
-                Log.d(TAG, "3:" + dataSnapshot.getKey());
 //                chatArrayList.clear();
-                Log.d(TAG, "2: "+dataSnapshot.getValue().toString());
-                // A new comment has been added, add it to the displayed list
                 if(!dataSnapshot.getKey().equals("date") && !dataSnapshot.getKey().equals("description")
                         && !dataSnapshot.getKey().equals("email")&& !dataSnapshot.getKey().equals("title")
                         && !dataSnapshot.getKey().equals("with")) {
@@ -98,17 +95,12 @@ public class ChatActivity extends AppCompatActivity {
                     Log.d(TAG, "onChildAdded: " + stText);
                     chatArrayList.add(chat);    //담은 데이터를 배열 리스트에 넣어 리사이클러뷰에 보낼 준비
                 }
-
                 mAdapter.notifyDataSetChanged();
-//                }
             }
-
             @Override
             public void onChildChanged(DataSnapshot snapshot, String previousChildName) {
                 Log.d(TAG, "onChildChanged:" + snapshot.getKey());
 
-                // A comment has changed, use the key to determine if we are displaying this
-                // comment and if so displayed the changed comment.
                 chatArrayList.clear(); //기존 배열리스트가 존재하지 않게 초기화
                 Log.d(TAG, "onDataChange: "+snapshot.getValue().toString());
                 if(!snapshot.getKey().equals("date") && !snapshot.getKey().equals("description")
@@ -124,7 +116,6 @@ public class ChatActivity extends AppCompatActivity {
                     chatArrayList.add(chat);    //담은 데이터를 배열 리스트에 넣어 리사이클러뷰에 보낼 준비
                 }
                 mAdapter.notifyDataSetChanged();
-                // ...
             }
 
             @Override
@@ -178,9 +169,7 @@ public class ChatActivity extends AppCompatActivity {
                 Hashtable<String, String> numbers
                         = new Hashtable<String, String>();
                 numbers.put("email", stEmail);
-                Log.d(TAG, "eeeeee: "+stEmail);
                 numbers.put("text", stText);
-                Log.d(TAG, "ssssss: "+stText);
 
                 myRef.setValue(numbers);
                 etText.setText("");
